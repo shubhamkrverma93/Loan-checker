@@ -43,7 +43,7 @@ An end-to-end, modern, responsive AI/ML web application designed for evaluating 
 | **Frontend** | React 18, Vite 6, Vanilla CSS Modern Design System, Lucide Icons |
 | **Backend** | Python 3.14, FastAPI, Pydantic v2, Uvicorn, REST API |
 | **Machine Learning** | Scikit-Learn, Pandas, NumPy, Joblib, Matplotlib |
-| **Database** | SQLite, SQLAlchemy ORM |
+| **Database** | SQLite locally; PostgreSQL recommended for production, SQLAlchemy ORM |
 | **Authentication** | JWT (PyJWT), Bcrypt password hashing |
 
 ---
@@ -66,7 +66,7 @@ loan-approval-ml/
 │
 ├── backend/                      # FastAPI Python Backend
 │   ├── main.py                   # Server entrypoint & seed initialization
-│   ├── database.py               # SQLite database configuration
+│   ├── database.py               # SQLAlchemy database configuration
 │   ├── models.py                 # SQLAlchemy ORM schemas
 │   ├── schemas.py                # Pydantic validation schemas
 │   ├── auth.py                   # JWT generation & Bcrypt hashing
@@ -139,6 +139,10 @@ python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 * The API will be active at: `http://127.0.0.1:8000`
 * Interactive API Documentation (Swagger): `http://127.0.0.1:8000/docs`
+
+### Render deployment
+
+The Render web service expects `DATABASE_URL` to point to a PostgreSQL database. Create or select a Render PostgreSQL database, then set the web service's `DATABASE_URL` environment variable to that database's **Internal Database URL**. Do not use a relative SQLite URL in production; relative SQLite paths are resolved from the backend directory and Render's local filesystem is not persistent by default.
 
 ### 5. Frontend Setup & Launch
 Open a second terminal window:
