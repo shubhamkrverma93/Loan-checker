@@ -11,16 +11,23 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(BACKEND_DIR)
 DB_DIR = os.path.join(BASE_DIR, "database")
-os.makedirs(DB_DIR, exist_ok=True)
 
 DB_PATH = os.path.join(DB_DIR, "loan_approval.db")
-DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{DB_PATH}")
+IS_PRODUCTION = os.getenv("ENVIRONMENT", "development").lower() == "production"
+DATABASE_URL = os.getenv("DATABASE_URL", "").strip()
+if IS_PRODUCTION and not DATABASE_URL:
+    raise RuntimeError("DATABASE_URL must be configured in production.")
+if not DATABASE_URL:
+    DATABASE_URL = f"sqlite:///{DB_PATH}"
+
 database_url = make_url(DATABASE_URL)
-if database_url.get_backend_name() == "sqlite" and database_url.database not in (
-    None,
-    "",
-    ":memory:",
-):
+if IS_PRODUCTION and database_url.get_backend_name() == "sqlite":
+    raise RuntimeError(
+        "A persistent PostgreSQL DATABASE_URL must be configured in production; "
+        "SQLite storage is not persistent on Render."
+    )
+
+if database_url.get_backend_name() == "sqlite" and database_url.database not in (None, "", ":memory:"):
     database_path = database_url.database
     if not os.path.isabs(database_path):
         database_path = os.path.abspath(os.path.join(BACKEND_DIR, database_path))

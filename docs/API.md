@@ -18,10 +18,10 @@ ReDoc Documentation: `http://127.0.0.1:8000/redoc`
 {
   "name": "Aarav Sharma",
   "email": "aarav@example.com",
-  "password": "securepassword123",
-  "role": "applicant"
+  "password": "securepassword123"
 }
 ```
+New public registrations are always applicants; administrator accounts are provisioned with the server-side `ADMIN_EMAIL` and `ADMIN_PASSWORD` environment variables.
 * **Response (200 OK):**
 ```json
 {
@@ -40,6 +40,7 @@ ReDoc Documentation: `http://127.0.0.1:8000/redoc`
 ### Login
 * **Method:** `POST`
 * **Endpoint:** `/api/auth/login`
+* The sample credentials below are for local development only. In production, use the administrator email and password configured on the server.
 * **Payload:**
 ```json
 {

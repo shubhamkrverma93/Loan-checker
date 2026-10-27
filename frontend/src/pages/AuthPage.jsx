@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, Mail, User, Shield, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { User, Shield, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { api, setStoredToken, setStoredUser } from '../services/api';
 
 export default function AuthPage({ setActivePage }) {
@@ -7,7 +7,6 @@ export default function AuthPage({ setActivePage }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('applicant');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -21,7 +20,7 @@ export default function AuthPage({ setActivePage }) {
     try {
       let res;
       if (isRegister) {
-        res = await api.register({ name, email, password, role });
+        res = await api.register({ name, email, password });
         setSuccess('Registration successful! Redirecting...');
       } else {
         res = await api.login({ email, password });
@@ -62,38 +61,39 @@ export default function AuthPage({ setActivePage }) {
           </p>
         </div>
 
-        {/* Demo Fast Login Helpers */}
-        <div
-          style={{
-            background: 'var(--bg-secondary)',
-            border: '1px dashed var(--border-color)',
-            borderRadius: 'var(--radius-md)',
-            padding: '1rem',
-            marginBottom: '1.5rem'
-          }}
-        >
-          <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
-            Quick Demo Login Presets:
+        {import.meta.env.DEV && (
+          <div
+            style={{
+              background: 'var(--bg-secondary)',
+              border: '1px dashed var(--border-color)',
+              borderRadius: 'var(--radius-md)',
+              padding: '1rem',
+              marginBottom: '1.5rem'
+            }}
+          >
+            <div style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
+              Quick Demo Login Presets:
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                style={{ fontSize: '0.8rem', padding: '0.4rem 0.75rem' }}
+                onClick={() => handleQuickDemo('admin@loanapproval.ai', 'admin123')}
+              >
+                <Shield size={13} style={{ color: 'var(--accent-primary)' }} /> Fill Admin
+              </button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                style={{ fontSize: '0.8rem', padding: '0.4rem 0.75rem' }}
+                onClick={() => handleQuickDemo('rahul@example.com', 'user123')}
+              >
+                <User size={13} style={{ color: 'var(--info)' }} /> Fill Applicant
+              </button>
+            </div>
           </div>
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              style={{ fontSize: '0.8rem', padding: '0.4rem 0.75rem' }}
-              onClick={() => handleQuickDemo('admin@loanapproval.ai', 'admin123')}
-            >
-              <Shield size={13} style={{ color: 'var(--accent-primary)' }} /> Fill Admin
-            </button>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              style={{ fontSize: '0.8rem', padding: '0.4rem 0.75rem' }}
-              onClick={() => handleQuickDemo('rahul@example.com', 'user123')}
-            >
-              <User size={13} style={{ color: 'var(--info)' }} /> Fill Applicant
-            </button>
-          </div>
-        </div>
+        )}
 
         {error && (
           <div
@@ -170,20 +170,6 @@ export default function AuthPage({ setActivePage }) {
               required
             />
           </div>
-
-          {isRegister && (
-            <div className="form-group">
-              <label className="form-label">Account Role</label>
-              <select
-                className="form-select"
-                value={role}
-                onChange={e => setRole(e.target.value)}
-              >
-                <option value="applicant">Applicant / Project Promoter</option>
-                <option value="admin">System Administrator</option>
-              </select>
-            </div>
-          )}
 
           <button
             type="submit"

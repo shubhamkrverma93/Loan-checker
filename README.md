@@ -142,7 +142,26 @@ python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
 
 ### Render deployment
 
-The Render web service expects `DATABASE_URL` to point to a PostgreSQL database. Create or select a Render PostgreSQL database, then set the web service's `DATABASE_URL` environment variable to that database's **Internal Database URL**. Do not use a relative SQLite URL in production; relative SQLite paths are resolved from the backend directory and Render's local filesystem is not persistent by default.
+The [Render Blueprint](./render.yaml) configures the API and an optional Render-hosted frontend. The deployed API is currently `https://loan-checker-3q1r.onrender.com`; check it at `https://loan-checker-3q1r.onrender.com/api/health`.
+
+The API requires a persistent PostgreSQL database; it intentionally refuses to start in production if `DATABASE_URL` is missing or points to SQLite. In Render's API service **Environment** settings, set `DATABASE_URL` to your PostgreSQL database's **Internal Database URL**, set a strong private `ADMIN_PASSWORD`, and keep the generated `JWT_SECRET`.
+
+### Deploy the frontend to Vercel
+
+1. In Vercel, choose **Add New → Project** and import this GitHub repository.
+2. Set **Root Directory** to `frontend`.
+3. Use these build settings:
+   - Framework preset: **Vite**
+   - Install command: `npm ci`
+   - Build command: `npm run build`
+   - Output directory: `dist`
+4. Add this environment variable for **Production** (and Preview too if you want preview deployments to call the API):
+   - `VITE_API_BASE_URL` = `https://loan-checker-3q1r.onrender.com`
+5. Click **Deploy**. When Vercel shows the assigned website URL, copy its exact origin, including `https://` and no trailing slash.
+6. In Render, open the API service's **Environment** settings and set `FRONTEND_ORIGINS` to that Vercel origin. If you also use a custom domain, include both origins separated by a comma. Save and redeploy the API.
+7. Open the Vercel website and test registration/login and a prediction. If the browser console shows a CORS error, verify the Vercel origin is an exact match in Render's `FRONTEND_ORIGINS`.
+
+Do not use a relative SQLite URL in production: Render's local filesystem is not persistent by default. Free web services can also spin down when idle, so the first request after inactivity may take longer.
 
 ### 5. Frontend Setup & Launch
 Open a second terminal window:
@@ -163,7 +182,7 @@ npm run dev
 
 ## Default Demonstration Credentials
 
-The database automatically seeds test accounts on first launch:
+The development database automatically seeds test accounts on first launch:
 
 | Role | Email | Password |
 |---|---|---|
@@ -171,6 +190,7 @@ The database automatically seeds test accounts on first launch:
 | **Loan Applicant** | `rahul@example.com` | `user123` |
 
 You can also use the one-click **"Fill Admin"** or **"Fill Applicant"** buttons on the Sign In page.
+These demo accounts and buttons are for local development only. On Render, the administrator account is created from `ADMIN_EMAIL` and `ADMIN_PASSWORD`; public sign-ups are applicant accounts.
 
 ---
 

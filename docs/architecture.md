@@ -50,7 +50,7 @@ flowchart TD
     end
 
     subgraph Storage["Persistence Layer"]
-        DB[(SQLite via SQLAlchemy ORM)]
+        DB[(SQLite locally / PostgreSQL in production via SQLAlchemy ORM)]
         Artifacts["Trained Models (.pkl) & Metrics (.json)"]
         Uploads["Validated Uploads Storage"]
     end

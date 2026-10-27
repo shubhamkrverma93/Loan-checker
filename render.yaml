@@ -20,3 +20,13 @@ services:
         sync: false
       - key: FRONTEND_ORIGINS
         sync: false
+
+  - type: web
+    name: loan-checker-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://loan-checker-3q1r.onrender.com
