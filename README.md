@@ -144,7 +144,7 @@ python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
 
 The [Render Blueprint](./render.yaml) configures the API and an optional Render-hosted frontend. The configured API service is `https://loan-checker-3q1r.onrender.com`; check it at `https://loan-checker-3q1r.onrender.com/api/health` and open `https://loan-checker-3q1r.onrender.com/docs`.
 
-The API requires a persistent PostgreSQL database; it intentionally refuses to start in production if `DATABASE_URL` is missing or points to SQLite. In Render's API service **Environment** settings, set `DATABASE_URL` to your PostgreSQL database's **Internal Database URL**, set a strong private `ADMIN_PASSWORD`, and keep the generated `JWT_SECRET`. The Blueprint allows the production Vercel origin `https://loan-checker-gamma.vercel.app`; add any additional frontend domains to `FRONTEND_ORIGINS` as comma-separated exact origins.
+The API requires a persistent PostgreSQL database; it intentionally refuses to start in production if `DATABASE_URL` is missing or points to SQLite. In Render's API service **Environment** settings, set `DATABASE_URL` to your PostgreSQL database's **Internal Database URL**, set a strong private `ADMIN_PASSWORD`, and keep the generated `JWT_SECRET`. The Blueprint allows the production and Git branch Vercel domains; add any additional frontend domains to `FRONTEND_ORIGINS` as comma-separated exact origins.
 
 ### Deploy the frontend to Vercel
 
@@ -158,7 +158,7 @@ The API requires a persistent PostgreSQL database; it intentionally refuses to s
 4. Add this environment variable for **Production** (and Preview too if you want preview deployments to call the API):
    - `VITE_API_URL` = `https://loan-checker-3q1r.onrender.com` (the API origin, without `/api` or a trailing slash)
 5. Click **Deploy**. When Vercel shows the assigned website URL, copy its exact origin, including `https://` and no trailing slash.
-6. The Render Blueprint sets `FRONTEND_ORIGINS` to the production Vercel origin. If you use a different Vercel domain or a custom domain, update `FRONTEND_ORIGINS` to include each exact origin, separated by commas, and redeploy the API.
+6. The Render Blueprint allows the production and Git branch Vercel domains. If you use a different Vercel domain or a custom domain, update `FRONTEND_ORIGINS` to include each exact origin, separated by commas, and redeploy the API.
 7. Open the Vercel website and test registration/login and a prediction. If the browser console shows a CORS error, verify the Vercel origin is an exact match in Render's `FRONTEND_ORIGINS`.
 
 Do not use a relative SQLite URL in production: Render's local filesystem is not persistent by default. Free web services can also spin down when idle, so the first request after inactivity may take longer.
