@@ -204,12 +204,6 @@ These demo accounts and buttons are for local development only. On Render, the a
 
 ---
 
-## College / Academic Project Presentation Notes
+## Download app link : https://loan-checker-git-main-code-warriors22.vercel.app/
 
-For a B.Tech CSE / IT final year viva or seminar:
-1. **Explain the Tri-Model Architecture**: Why single models fail in financial underwriting:
-   - Logistic Regression solves the **binary decision** ("Can we lend?").
-   - Linear Regression calculates the **monetary sizing** ("How much is safe to lend?").
-   - KNN provides **peer cluster benchmarking** ("How did similar past borrowers perform?").
-2. **Transparent Rule Synthesis**: Emphasize that the system is not a black-box; it combines probability thresholds with strict debt-service and risk-cohort checks.
-3. **Data Preprocessing**: Demonstrate the `ColumnTransformer` with `StandardScaler` for continuous features and `OneHotEncoder` for nominal attributes, preventing data leakage via strict train/test isolation.
+
