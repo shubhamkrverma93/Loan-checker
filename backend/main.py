@@ -33,6 +33,7 @@ allowed_origins = [
     for origin in os.getenv("FRONTEND_ORIGINS", "http://localhost:5173").split(",")
     if origin.strip()
 ]
+allowed_origins.append("https://loan-checker-gamma.vercel.app")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
