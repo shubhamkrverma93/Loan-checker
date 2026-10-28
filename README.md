@@ -142,7 +142,7 @@ python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
 
 ### Render deployment
 
-The [Render Blueprint](./render.yaml) configures the API and an optional Render-hosted frontend. The deployed API is currently `https://loan-checker-3q1r.onrender.com`; check it at `https://loan-checker-3q1r.onrender.com/api/health`.
+The [Render Blueprint](./render.yaml) configures the API and an optional Render-hosted frontend. The configured API service is `https://loan-checker-3q1r.onrender.com`; check it at `https://loan-checker-3q1r.onrender.com/api/health` and open `https://loan-checker-3q1r.onrender.com/docs`.
 
 The API requires a persistent PostgreSQL database; it intentionally refuses to start in production if `DATABASE_URL` is missing or points to SQLite. In Render's API service **Environment** settings, set `DATABASE_URL` to your PostgreSQL database's **Internal Database URL**, set a strong private `ADMIN_PASSWORD`, and keep the generated `JWT_SECRET`.
 
@@ -156,7 +156,7 @@ The API requires a persistent PostgreSQL database; it intentionally refuses to s
    - Build command: `npm run build`
    - Output directory: `dist`
 4. Add this environment variable for **Production** (and Preview too if you want preview deployments to call the API):
-   - `VITE_API_BASE_URL` = `https://loan-checker-3q1r.onrender.com`
+   - `VITE_API_URL` = `https://loan-checker-3q1r.onrender.com` (the API origin, without `/api` or a trailing slash)
 5. Click **Deploy**. When Vercel shows the assigned website URL, copy its exact origin, including `https://` and no trailing slash.
 6. In Render, open the API service's **Environment** settings and set `FRONTEND_ORIGINS` to that Vercel origin. If you also use a custom domain, include both origins separated by a comma. Save and redeploy the API.
 7. Open the Vercel website and test registration/login and a prediction. If the browser console shows a CORS error, verify the Vercel origin is an exact match in Render's `FRONTEND_ORIGINS`.

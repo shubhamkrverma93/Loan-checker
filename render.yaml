@@ -28,5 +28,5 @@ services:
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
     envVars:
-      - key: VITE_API_BASE_URL
+      - key: VITE_API_URL
         value: https://loan-checker-3q1r.onrender.com

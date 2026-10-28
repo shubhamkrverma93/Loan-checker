@@ -2,7 +2,11 @@
  * API Service for communicating with FastAPI Backend.
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+const API_BASE_URL = (
+  import.meta.env.VITE_API_URL ||
+  import.meta.env.VITE_API_BASE_URL ||
+  ''
+).replace(/\/+$/, '');
 
 export const getStoredToken = () => localStorage.getItem('loan_auth_token');
 export const setStoredToken = (token) => localStorage.setItem('loan_auth_token', token);
